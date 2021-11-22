@@ -6,29 +6,31 @@ function PinPad() {
   const [result, setResult] = useState("");
   const [count, setCount] = useState(0);
   const [disabled, setDisabled] = useState(false);
+  const [disabled2, setDisabled2] = useState(false);
   const [inputType, setInputType] = useState("password");
 
   const handleClick = (e) => {
-    if (result < 1000) {
+    if (result.length < 4) {
       setInputType("password");
       setResult(result.concat(e.target.name));
     }
   };
 
   const handleSubmit = () => {
-    //   if ( result != "ERROR" && result != "" && result >= 1000 ) {
-    if (result !== "ERROR" && result !== "") {
+    if (result !== "ERROR" && result !== " OK " && result !== "") {
+      setDisabled2(false);
       setInputType("text");
-      setCount(count + 1);
       if (password === result) {
-        setResult("OK");
+        setResult(" OK ");
+        setCount(0);
       } else if (count > 1) {
         setResult("LOCKED");
         setDisabled(!disabled);
-        setTimeout(() => {setDisabled(false);setResult("");}, 30000);
+        setTimeout(() => {setDisabled(false); setResult("");}, 30000);
         setCount(0);
       } else {
         setResult("ERROR");
+        setCount(count + 1);
       }
     }
   };
@@ -41,7 +43,7 @@ function PinPad() {
     <div className="Pin">
       <header className="Pin-header">
         <div className="result">
-        <input disabled={!disabled} value={result} type={inputType} />
+          <input disabled={!disabled2} value={result} type={inputType}/>
         </div>
         <button name="1" onClick={handleClick} disabled={disabled}>
           1
